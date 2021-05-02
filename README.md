@@ -1,4 +1,8 @@
-# FundamentalsOfMachineLearning
+# Machine Learning
+
+***
+
+### Fundamentals of Machine Learning (FML)
 
 1. Supervised Learning
     * Threshold classifier
@@ -16,4 +20,6 @@
 
 4. Extras
     * Inverse Transform Sampling
+
+### Advanced Machine Learning (AML)
     
