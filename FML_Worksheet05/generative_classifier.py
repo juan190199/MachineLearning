@@ -45,8 +45,10 @@ class GenerativeClassifier:
         """
 
         :param x: array-like of shape (1, n_features)
-            Array of samples (test vectors)
+            Sample point (test instance)
 
-        :return:
+        :return: int
+            Predicted target for sample point x
+
         """
         return np.argmax([tree.predict(x) for tree in self.trees_])
