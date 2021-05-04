@@ -4,10 +4,8 @@
 *.log
 __pycache__/
 
-## Jupyter notebook ##
-*.ipynb_checkpoints
-
 ## macOS ##
 *.DS_Store
 
-
+## Jupyter notebook ##
+*.ipynb_checkpoints
