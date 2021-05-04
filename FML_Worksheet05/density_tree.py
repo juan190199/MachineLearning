@@ -1,6 +1,6 @@
 import numpy as np
 
-from base import Tree
+from base import (Node, Tree)
 
 
 def make_density_split_node(node, N, feature_indices):
@@ -19,6 +19,9 @@ def make_density_split_node(node, N, feature_indices):
     """
     n, D = node.data.shape
     m, M = node.box
+    v = np.prod(M - m)
+    if v <= 0:
+        raise ValueError("Zero volume (should not happen)")
 
     # Find best feature j (among 'feature_indices') and best threshold t for the split
     e_min = float("inf")
@@ -31,36 +34,48 @@ def make_density_split_node(node, N, feature_indices):
         # Compute candidate thresholds
         tj = (dj[1:] + dj[:-1]) / 2
 
-        # Illustration: for loop - hint: vectorized version is possible
+        # Compute Leave-One-Out error of resulting children nodes for each candidate threshold
         for t in tj:
-            # Compute the error
-            loo_error = ...
+            # Compute number of instances in left and right children
+            nl = np.sum(node.data[:, j] <= t)
+            nr = n - nl
+            # Compute volume of left and right nodes
+            vl = t / (M[j] - m[j])  # vl = v * t / (M[j] - m[j])
+            vr = 1.0 - vl  # vr = v - vl
+            # Notice actual volumes are commented. These differ by the constant factor v.
 
-            # choose the best threshold that
+            if vl == 0 or vr == 0:
+                continue
+            # Compute LOO errors
+            el = (nl / (N * vl)) * (nl / N - 2.0 * ((nl - 1) / (n - 1)))
+            er = (nr / (N * vr)) * (nr / N - 2.0 * ((nr - 1) / (n - 1)))
+
+            # Choose best threshold that minimizes sum of LOO error
+            loo_error = el + er
             if loo_error < e_min:
-                e_min = ...
-                j_min = ...
-                t_min = ...
+                e_min = loo_error
+                j_min = j
+                t_min = t
 
     # create children
     left = Node()
     right = Node()
 
-    # initialize 'left' and 'right' with the data subsets and bounding boxes
+    # Initialize 'left' and 'right' with the data subsets and bounding boxes
     # according to the optimal split found above
-    left.data = ...  # store data in left node -- for subsequent splits
-    left.box = ...  # store bounding box in left node
-    right.data = ...
-    right.box = ...
+    left.data = node.data[node.data[:, j_min] <= t_min, :]
+    left.box = m.copy(), M.copy()
+    left.box = [1][j_min] = t_min
 
-    # turn the current 'node' into a split node
-    # (store children and split condition)
+    right.data = node.data[node.data[:, j_min] > t_min, :]
+    right.box = m.copy(), M.copy()
+    right.box = [0][j_min] = t_min
+
     node.left = left
     node.right = right
-    node.feature = ...
-    node.threshold = ...
+    node.feature = j_min
+    node.threshold = t_min
 
-    # return the children (to be placed on the stack)
     return left, right
 
 
@@ -83,6 +98,7 @@ class DensityTree(Tree):
     * root_:
 
     """
+
     def __init__(self):
         super(DensityTree, self).__init__()
 
