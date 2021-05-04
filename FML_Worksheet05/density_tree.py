@@ -7,14 +7,17 @@ def make_density_split_node(node, N, feature_indices):
     """
     Selects dimension and threshold where node is to be split up
 
-    :param node:
+    :param node: Node
+        Node to be split
 
-    :param N:
+    :param N: int
+        Number of training instances
 
     :param feature_indices: array-like of shape (D_try, )
         Contains feature indices to be considered in the present split
 
     :return: tuple
+        Tuple of left and right children nodes (to be placed on the stack)
 
     """
     n, D = node.data.shape
@@ -77,6 +80,24 @@ def make_density_split_node(node, N, feature_indices):
     node.threshold = t_min
 
     return left, right
+
+
+def make_density_leaf_node(node, N):
+    """
+    Compute and store leaf response
+
+    :param node: Node
+        Node that has reached termination criterion
+
+    :param N: int
+        Number of training instances
+
+    :return:
+    """
+    n = node.data.shape[0]
+    m, M = node.box
+    v = np.prod(M - m)
+    node.response = n / (N * v)
 
 
 class DensityTree(Tree):
@@ -148,8 +169,7 @@ class DensityTree(Tree):
                 stack.append(left)
                 stack.append(right)
             else:
-                # Call 'make_density_leaf_node()' to turn 'node' into a leaf node.
-                ...  # your code here
+                make_density_leaf_node(node, N)
 
     def predict(self, x):
         """
