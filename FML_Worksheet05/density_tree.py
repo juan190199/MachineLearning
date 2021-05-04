@@ -104,16 +104,6 @@ class DensityTree(Tree):
     """
     Density Tree:
 
-    Attributes
-    -----------
-    * prior_:
-
-    * box_: Tuple
-        Tuple containing diagonal corners of bounding box
-
-    * root_: Node
-        Root node containing all data
-
     """
 
     def __init__(self):
@@ -125,8 +115,8 @@ class DensityTree(Tree):
         :param data: array-like of shape (n_samples, n_features)
             Design matrix
 
-        :param prior:
-
+        :param prior: int
+            Prior probability of target class
 
         :param n_min: int, default=20
             Termination criterion (Do not split if node contains fewer instances)
@@ -171,10 +161,10 @@ class DensityTree(Tree):
         """
         Computes p(x | y) * p(y) if x is within the tree's bounding box. Otherwise return 0
 
-        :param x: array-like of shape (n_samples, n_features)
-            Array of samples (test vectors)
+        :param x: array-like of shape (1, n_features)
+            Sample point (test instance)
 
-        :return: int
+        :return:
             Return p(x | y) * p(y) if x is within the tree's bounding box. Otherwise return 0
         """
         m, M = self.box
