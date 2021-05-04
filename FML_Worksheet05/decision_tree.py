@@ -90,7 +90,7 @@ class DecisionTree(Tree):
     def __init__(self):
         super(DecisionTree, self).__init__()
 
-    def train(self, data, labels, n_min=20):
+    def fit(self, data, labels, n_min=20):
         """
 
         :param data: array-like of shape (n_instances, n_features)

@@ -119,7 +119,7 @@ class DensityTree(Tree):
     def __init__(self):
         super(DensityTree, self).__init__()
 
-    def train(self, data, prior, n_min=20):
+    def fit(self, data, prior, n_min=20):
         """
 
         :param data: array-like of shape (n_samples, n_features)
