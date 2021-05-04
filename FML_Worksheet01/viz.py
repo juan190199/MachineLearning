@@ -7,7 +7,10 @@ from classifiers import error_threshold_classifier
 def plot_data(data):
     """
     Plot prior and likelihood for each class
-    :param data: ndarray -- Data set to be used
+
+    :param data: array-like of shape (n, n_features)
+        Data set to be used
+
     :return:
     """
     X_0 = data[data[:, 1] == 0][:, 0]

@@ -4,8 +4,12 @@ import numpy as np
 def create_data(N):
     """
     Create data using inverse transform method
-    :param N: int -- Batch size of the data to be created
-    :return: ndarray (N, N) -- Data set with N instances
+
+    :param N: int
+        Batch size of the data to be created
+
+    :return: array-like of shape (N, N)
+        Data set with N instances
     """
     Y = np.random.randint(0, 2, size=N)  # Sample instance labels from prior 1/2
     if N == 2:
