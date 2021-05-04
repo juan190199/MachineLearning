@@ -27,11 +27,11 @@ def make_decision_split_node(node, feature_indices):
 
             nl = np.sum(node.data[:, j] <= t)
             ll = node.labels[left_indices]
-            el = nl * (1 - np.sum(np.square(np.bincount(ll)/nl)))
+            el = nl * (1 - np.sum(np.square(np.bincount(ll) / nl)))
 
             nr = n - nl
             lr = node.labels[~left_indices]
-            er = nr * (1 - np.sum(np.square(np.bincount(lr)/nr)))
+            er = nr * (1 - np.sum(np.square(np.bincount(lr) / nr)))
 
             if el + er < e_min:
                 e_min = el + er
@@ -64,7 +64,8 @@ def make_decision_leaf_node(node):
     :param node:
     :return:
     """
-    pass
+    node.N = node.labels.shape[0]
+    node.response = np.bincount(node.labels, minlength=10) / node.N
 
 
 def node_is_pure(node):
@@ -85,6 +86,7 @@ class DecisionTree(Tree):
     -----------
 
     """
+
     def __init__(self):
         super(DecisionTree, self).__init__()
 
@@ -123,6 +125,14 @@ class DecisionTree(Tree):
                 make_decision_leaf_node(node)
 
     def predict(self, x):
+        """
+        Computes p(y | x)
+
+        :param x: array-like of shape (n_samples, n_features)
+            Array of samples (test vectors)
+
+        :return:
+        """
         leaf = self.find_leaf(x)
-        # compute p(y | x)
-        return ...  # your code here
+
+        return leaf.response
