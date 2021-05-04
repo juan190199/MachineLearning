@@ -63,6 +63,7 @@ class LinearDiscriminantAnalysis(object):
     def fit(self, X, y, store_covariance=False):
         """
         Fit LDA model according to the given training data and parameters.
+
         :param X: array-like of shape (n_samples, n_features)
             Design matrix
 
@@ -164,6 +165,7 @@ class LinearDiscriminantAnalysis(object):
     def _decision_function(self, X):
         """
         Computes values related to each class, per sample.
+
         :param X:array-like of shape (n_samples, n_features)
             Array of samples (test vectors)
 
