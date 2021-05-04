@@ -6,9 +6,14 @@ from base import (Node, Tree)
 def make_decision_split_node(node, feature_indices):
     """
 
-    :param node:
-    :param feature_indices:
-    :return:
+    :param node: Node
+        Node to be split
+
+    :param feature_indices: array-like of shape (D_try, )
+        Contains feature indices to be considered in the present split
+
+    :return: tuple
+        Tuple of left and right children nodes (to be placed on the stack)
     """
     n, D = node.data.shape
 
@@ -60,8 +65,11 @@ def make_decision_split_node(node, feature_indices):
 
 def make_decision_leaf_node(node):
     """
+    Compute and store leaf response
 
-    :param node:
+    :param node: Node
+        Node that has reached termination criterion
+
     :return:
     """
     node.N = node.labels.shape[0]
@@ -71,7 +79,10 @@ def make_decision_leaf_node(node):
 def node_is_pure(node):
     """
     Check if node contains instances of the same class
-    :param node:
+
+    :param node: Node
+        Node to be checked if has reached termination criterion
+
     :return: bool
     True, if given node is pure. Otherwise, false
     """
@@ -84,6 +95,7 @@ class DecisionTree(Tree):
 
     Attributes
     -----------
+    * root_: Root node containing all data
 
     """
 

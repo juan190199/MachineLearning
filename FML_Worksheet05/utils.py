@@ -13,6 +13,11 @@ class GenerativeClassifier:
 
     For prediction, all 10 DensityTree returns the prediction p(x|y) * p(y) for a data point.
     The target for the DensityTree maximizing p(x|y) * p(y) is the prediction of the generative classifier
+
+    Attributes
+    -----------
+    * trees_: List
+        List containing 10 DensityTree objects to train each of them with only one class of data from the training data.
     """
     def __init__(self):
         self.trees_ = [DensityTree() for i in range(10)]
@@ -20,9 +25,15 @@ class GenerativeClassifier:
     def fit(self, data, target, n_min=20):
         """
 
-        :param data:
-        :param target:
-        :param n_min:
+        :param data: array-like of shape (n_instances, n_features)
+            Design matrix with data
+
+        :param target: array-like of shape (n_instances, )
+            Ground-truth responses
+
+        :param n_min: int, default=20
+            Termination criterion (Do not split if node contains fewer instances)
+
         :return:
         """
         data_subsets = [data[target == i] for i in range(10)]
@@ -34,6 +45,8 @@ class GenerativeClassifier:
         """
 
         :param x: array-like of shape (1, n_features)
+            Array of samples (test vectors)
+
         :return:
         """
         return np.argmax([tree.predict(x) for tree in self.trees_])

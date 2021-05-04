@@ -68,11 +68,11 @@ def make_density_split_node(node, N, feature_indices):
     # according to the optimal split found above
     left.data = node.data[node.data[:, j_min] <= t_min, :]
     left.box = m.copy(), M.copy()
-    left.box = [1][j_min] = t_min
+    left.box[1][j_min] = t_min
 
     right.data = node.data[node.data[:, j_min] > t_min, :]
     right.box = m.copy(), M.copy()
-    right.box = [0][j_min] = t_min
+    right.box[0][j_min] = t_min
 
     node.left = left
     node.right = right
@@ -132,14 +132,14 @@ class DensityTree(Tree):
             Termination criterion (Do not split if node contains fewer instances)
         :return:
         """
-        self.prior_ = prior
+        self.prior = prior
         N, D = data.shape
         D_try = int(np.sqrt(D))  # Number of features to consider for each split decision
 
         # Find and remember the tree's bounding box,
         # i.e. the lower and upper limits of the training feature set
         m, M = np.min(data, axis=0), np.max(data, axis=0)
-        self.box_ = m.copy(), M.copy()
+        self.box = m.copy(), M.copy()
 
         # Identify invalid features and adjust the bounding box
         # (If m[j] == M[j] for some j, the bounding box has zero volume,
@@ -151,11 +151,11 @@ class DensityTree(Tree):
         M[invalid_features] = m[invalid_features] + 1
 
         # Initialize the root node
-        self.root_.data = data
-        self.root_.box = m.copy(), M.copy()
+        self.root.data = data
+        self.root.box = m.copy(), M.copy()
 
         # Build the tree
-        stack = [self.root_]
+        stack = [self.root]
         while len(stack):
             node = stack.pop()
             n = node.data.shape[0]  # Number of instances in present node
@@ -177,8 +177,8 @@ class DensityTree(Tree):
         :return: int
             Return p(x | y) * p(y) if x is within the tree's bounding box. Otherwise return 0
         """
-        m, M = self.box_
-        if np.any(x < m) or np.amy(x > M):
+        m, M = self.box
+        if np.any(x < m) or np.any(x > M):
             return 0.0
         else:
-            return self.prior_ * self.find_leaf(x).response
+            return self.prior * self.find_leaf(x).response
