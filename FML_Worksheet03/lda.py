@@ -64,7 +64,7 @@ class LinearDiscriminantAnalysis(object):
         """
         Fit LDA model according to the given training data and parameters.
         :param X: array-like of shape (n_samples, n_features)
-            esign matrix
+            Design matrix
 
         :param y: array-like of shape (n_samples,) or (n_samples, n_classes)
             Target values.
