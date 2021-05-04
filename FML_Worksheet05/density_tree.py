@@ -60,7 +60,7 @@ def make_density_split_node(node, N, feature_indices):
                 j_min = j
                 t_min = t
 
-    # create children
+    # Create children
     left = Node()
     right = Node()
 
