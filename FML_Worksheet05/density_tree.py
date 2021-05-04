@@ -114,9 +114,11 @@ class DensityTree(Tree):
     -----------
     * prior_:
 
-    * box_:
+    * box_: Tuple
+        Tuple containing diagonal corners of bounding box
 
-    * root_:
+    * root_: Node
+        Root node containing all data
 
     """
 
@@ -130,7 +132,7 @@ class DensityTree(Tree):
             Design matrix
 
         :param prior:
-            the prior probability of this digit???
+
 
         :param n_min: int, default=20
             Termination criterion (Do not split if node contains fewer instances)
@@ -173,11 +175,16 @@ class DensityTree(Tree):
 
     def predict(self, x):
         """
+        Computes p(x | y) * p(y) if x is within the tree's bounding box. Otherwise return 0
 
-        :param x:
-        :return:
+        :param x: array-like of shape (n_samples, n_features)
+            Array of samples (test vectors)
+
+        :return: int
+            Return p(x | y) * p(y) if x is within the tree's bounding box. Otherwise return 0
         """
-        leaf = self.find_leaf(x)
-        # return p(x | y) * p(y) if x is within the tree's bounding box
-        # and return 0 otherwise
-        return ...  # your code here
+        m, M = self.box_
+        if np.any(x < m) or np.amy(x > M):
+            return 0.0
+        else:
+            return self.prior_ * self.find_leaf(x).response
