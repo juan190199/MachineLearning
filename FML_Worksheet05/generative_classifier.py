@@ -1,6 +1,7 @@
 import numpy as np
 
 from density_tree import DensityTree
+from density_forest import DensityForest
 
 
 class GenerativeClassifier:
@@ -52,3 +53,36 @@ class GenerativeClassifier:
 
         """
         return np.argmax([tree.predict(x) for tree in self.trees_])
+
+
+class GenerativeClassifierDensityForest:
+    """
+
+    """
+    def __init__(self, n_trees):
+        """
+
+        :param n_trees:
+        """
+        self.forests_ = [DensityForest(n_trees) for i in range(10)]
+
+    def fit(self, data, target, n_min=20):
+        """
+
+        :param data:
+        :param target:
+        :param n_min:
+        :return:
+        """
+        data_subsets = [data[target == i] for i in range(10)]
+        N = len(target)
+        for i, forest in enumerate(self.forests_):
+            forest.fit(data_subsets[i], len(data_subsets[i]) / N, n_min)
+
+    def predict(self, x):
+        """
+
+        :param x:
+        :return:
+        """
+        return np.argmax([forest.predict(x) for forest in self.forests_])
