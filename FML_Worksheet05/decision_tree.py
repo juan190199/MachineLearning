@@ -112,7 +112,7 @@ class DecisionTree(Tree):
             Ground-truth responses
 
         :param n_min: int, default=20
-            Termination criterion (Do not split if node contains fewer instances)
+            The minimum number of samples required to split an internal node
 
         :return:
         """
@@ -140,11 +140,11 @@ class DecisionTree(Tree):
         """
         Computes p(y | x)
 
-        :param x: array-like of shape (n_samples, n_features)
-            Array of samples (test vectors)
+        :param x: array-like of shape (1, n_features)
+            Sample point (test instance)
 
-        :return:
+        :return: int
+            Returns posterior probability p(y | x)
         """
         leaf = self.find_leaf(x)
-
         return leaf.response
