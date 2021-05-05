@@ -33,7 +33,7 @@ class GenerativeClassifier:
             Ground-truth responses
 
         :param n_min: int, default=20
-            Termination criterion (Do not split if node contains fewer instances)
+            The minimum number of samples required to split an internal node
 
         :return:
         """
@@ -50,28 +50,33 @@ class GenerativeClassifier:
 
         :return: int
             Predicted target for sample point x
-
         """
         return np.argmax([tree.predict(x) for tree in self.trees_])
 
 
 class GenerativeClassifierDensityForest:
     """
-
+    Generative Classifier Density Forest
     """
-    def __init__(self, n_trees):
+    def __init__(self, n_trees=100):
         """
 
-        :param n_trees:
+        :param n_trees: int, default=100
+            The number of trees in the forest.
         """
         self.forests_ = [DensityForest(n_trees) for i in range(10)]
 
     def fit(self, data, target, n_min=20):
         """
 
-        :param data:
+        :param data: array-like of shape (n_instances, n_features)
+            Design matrix
+
         :param target:
-        :param n_min:
+
+        :param n_min: int, default=20
+            The minimum number of samples required to split an internal node.
+
         :return:
         """
         data_subsets = [data[target == i] for i in range(10)]
@@ -82,7 +87,10 @@ class GenerativeClassifierDensityForest:
     def predict(self, x):
         """
 
-        :param x:
-        :return:
+        :param x: array-like of shape (1, n_features)
+            Sample point (test instance)
+
+        :return: int
+            Return target maximizing the posterior probability p(x | y) * p(y)
         """
         return np.argmax([forest.predict(x) for forest in self.forests_])
