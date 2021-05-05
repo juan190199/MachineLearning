@@ -119,7 +119,8 @@ class DensityTree(Tree):
             Prior probability of target class
 
         :param n_min: int, default=20
-            Termination criterion (Do not split if node contains fewer instances)
+            The minimum number of samples required to split an internal node
+
         :return:
         """
         self.prior = prior
