@@ -91,12 +91,7 @@ def node_is_pure(node):
 
 class DecisionTree(Tree):
     """
-    Decision Tree:
-
-    Attributes
-    -----------
-    * root_: Root node containing all data
-
+    Decision Tree: Tree-like model that predicts the value of a target variable based on several input variables.
     """
 
     def __init__(self):

@@ -5,7 +5,8 @@ from decision_tree import DecisionTree
 
 class DecisionForest:
     """
-    Decision Forest:
+    Decision Forest: Family of tree-like model that predicts the value of a target variable
+    based on several input variables.
     """
 
     def __init__(self, n_trees=100):

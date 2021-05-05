@@ -5,7 +5,13 @@ from density_tree import DensityTree
 
 class DensityForest:
     """
-    Density Forest:
+    Density Forest: Family of tree-like models (based on [1]) for estimating the probability density of the given data
+
+    Reference
+    ----------
+    [1] Ram, Parikshit & Gray, Alexander. (2011). Density estimation trees.
+    Proceedings of the ACM SIGKDD International Conference on Knowledge Discovery and Data Mining.
+    627-635. 10.1145/2020408.2020507.
     """
 
     def __init__(self, n_trees=100):
