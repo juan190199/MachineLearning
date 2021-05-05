@@ -3,12 +3,16 @@ import numpy as np
 from decision_tree import DecisionTree
 
 
-class DecisionForest():
+class DecisionForest:
     """
 
     """
 
     def __init__(self, n_trees):
+        """
+
+        :param n_trees:
+        """
         self.trees_ = [DecisionTree() for i in range(n_trees)]
 
     def fit(self, data, labels, n_min=0):
@@ -29,4 +33,4 @@ class DecisionForest():
         :param x:
         :return:
         """
-        return np.mean([tree.predict(x) for tree in self.trees_])
+        return np.mean([tree.predict(x) for tree in self.trees_], axis=0)
