@@ -9,3 +9,6 @@ __pycache__/
 
 ## Jupyter notebook ##
 *.ipynb_checkpoints
+
+## PDF ##
+*.pdf
