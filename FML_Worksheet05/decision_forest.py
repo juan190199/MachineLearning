@@ -5,22 +5,27 @@ from decision_tree import DecisionTree
 
 class DecisionForest:
     """
-
+    Decision Forest:
     """
 
-    def __init__(self, n_trees):
+    def __init__(self, n_trees=100):
         """
 
-        :param n_trees:
+        :param n_trees: int, default=100
+            The number of trees in the forest.
         """
         self.trees_ = [DecisionTree() for i in range(n_trees)]
 
     def fit(self, data, labels, n_min=0):
         """
 
-        :param data:
+        :param data: array-like of shape (n_instances, n_features)
+            Design matrix
+
         :param labels:
-        :param n_min:
+        :param n_min: int, default=0
+            The minimum number of samples required to split an internal node
+
         :return:
         """
         for tree in self.trees_:
@@ -30,7 +35,10 @@ class DecisionForest:
     def predict(self, x):
         """
 
-        :param x:
-        :return:
+        :param x: array-like of shape (1, n_features)
+            Sample point (test instance)
+
+        :return: int
+            Return mean of posterior probabilities of each tree in self.trees_
         """
         return np.mean([tree.predict(x) for tree in self.trees_], axis=0)
