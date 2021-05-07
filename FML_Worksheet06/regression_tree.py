@@ -30,3 +30,11 @@ class RegressionTree(Tree):
         :return:
         """
         pass
+
+    def predict(self, X):
+        """
+
+        :param X:
+        :return:
+        """
+        pass
