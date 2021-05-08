@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class Node:
     pass
 
@@ -17,6 +20,25 @@ class Tree:
         return node
 
 
+def make_regression_split_node(node, feature_indices):
+    """
+
+    :param node:
+    :param feature_indices:
+    :return:
+    """
+    pass
+
+
+def make_regression_leaf_node(node):
+    """
+
+    :param node:
+    :return:
+    """
+    pass
+
+
 class RegressionTree(Tree):
     def __init__(self):
         super(RegressionTree, self).__init__()
@@ -29,7 +51,25 @@ class RegressionTree(Tree):
         :param n_min:
         :return:
         """
-        pass
+        N, D = data.shape
+        D_try = int(np.sqrt(D))
+
+        # Initialize root node
+        self.root.data = data
+        self.root.labels = labels
+
+        # Build the tree
+        stack = [self.root]
+        while len(stack):
+            node = stack.pop()
+            n = node.data.shape[0]
+            if n >= n_min:
+                perm = np.random.permutation(D)
+                left, right = make_regression_split_node(node, perm[:D_try])
+                stack.append(left)
+                stack.append(right)
+            else:
+                make_regression_leaf_node(node)
 
     def predict(self, X):
         """
@@ -37,4 +77,8 @@ class RegressionTree(Tree):
         :param X:
         :return:
         """
-        pass
+        if X.shape[0] == 1:
+            leaf = self.find_leaf(X)
+            return leaf.response
+        else:
+            pred = np.apply_along_axis(self.predict, axis=1, arr=X)
