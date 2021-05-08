@@ -35,6 +35,7 @@ def make_decision_split_node(node, feature_indices):
             el = nl * (1 - np.sum(np.square(np.bincount(ll) / nl)))
 
             nr = n - nl
+            # lr = node.labels[node.data[:, j] > t]
             lr = node.labels[~left_indices]
             er = nr * (1 - np.sum(np.square(np.bincount(lr) / nr)))
 
