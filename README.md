@@ -12,6 +12,7 @@
     * Linear Discriminant Analysis
     * Density Tree and Decision Tree
     * Density Forest and Decision Forest
+    * Linear Regression and Regression Tree
 
 2. Unsupervised Learning
 
