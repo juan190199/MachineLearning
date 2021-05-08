@@ -82,7 +82,8 @@ def make_regression_leaf_node(node):
     :param node:
     :return:
     """
-    pass
+    node.N = node.labels.shape[0]
+    node.response = node.labels.mean()
 
 
 class RegressionTree(Tree):
