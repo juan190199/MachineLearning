@@ -124,8 +124,9 @@ class RegressionTree(Tree):
         :param X:
         :return:
         """
-        if X.shape[0] == 1:
+        if X.ndim == 1:
             leaf = self.find_leaf(X)
             return leaf.response
         else:
             pred = np.apply_along_axis(self.predict, axis=1, arr=X)
+            return pred
