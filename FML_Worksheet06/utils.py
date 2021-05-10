@@ -36,7 +36,7 @@ def k_fold_cv(model, feats, targets, k=10):
     return np.mean(err_train), np.std(err_train), np.mean(err_test), np.std(err_test)
 
 
-def test_data(models, oerrors, data, n_shuffle_sets, pred_variable='rating'):
+def test_data(models, oerrors, data, n_shuffle_sets, pred_variable='rating', seed=12345):
     """
 
     :param data:
@@ -46,7 +46,7 @@ def test_data(models, oerrors, data, n_shuffle_sets, pred_variable='rating'):
     """
     shuffle_sets = []
     # Random seed to make results reproducible
-    np.random.seed(12345)
+    np.random.seed(seed)
     # Shuffling works in place, therefore copy is retrieved
     rating = np.array(data[pred_variable]).copy()
     for i in range(n_shuffle_sets):
@@ -68,5 +68,4 @@ def test_data(models, oerrors, data, n_shuffle_sets, pred_variable='rating'):
             shuffled_errors[j, i] = err_test
 
     n_greater_errors_models = np.sum((shuffled_errors > oerrors), axis=1)
-
     return n_greater_errors_models
