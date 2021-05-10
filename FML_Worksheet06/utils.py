@@ -17,10 +17,10 @@ def mean_squared_error(prediction, target):
     return np.sum(np.square(prediction - target)) / N
 
 
-def k_fold_cv(model, feats, targets, k=10):
+def k_fold_cv(mod, feats, targets, k=10):
     """
 
-    :param model:
+    :param mod:
     :param feats:
     :param targets:
     :param k:
@@ -30,10 +30,12 @@ def k_fold_cv(model, feats, targets, k=10):
     kf = model_selection.KFold(n_splits=k)
     err_train, err_test = [], []
     for train, test in kf.split(feats):
-        model.fit(feats[train], targets[train])
-        err_train.append(mean_squared_error(model.predict(feats[train]), targets[train]))
-        err_test.append(mean_squared_error(model.predict(feats[test]), targets[test]))
-    return np.mean(err_train), np.std(err_train), np.mean(err_test), np.std(err_test)
+        mod.fit(feats[train], targets[train])
+        # Estimate for the training error, evaluated on the whole data
+        err_train.append(mean_squared_error(mod.predict(feats), targets))
+        # Estimate for the test error, evaluated on the test fold
+        err_test.append(mean_squared_error(mod.predict(feats[test]), targets[test]))
+    return np.mean(err_test), np.std(err_test), np.mean(err_train), np.std(err_train)
 
 
 def test_data(models, oerrors, data, n_shuffle_sets, pred_variable='rating', seed=12345):
@@ -64,7 +66,7 @@ def test_data(models, oerrors, data, n_shuffle_sets, pred_variable='rating', see
         targets = data_set.targets
         assert feats.shape[0] == targets.shape[0]
         for j, model in enumerate(models):
-            err_train, std_err_train, err_test, std_err_test = k_fold_cv(model, feats, targets)
+            err_test, std_err_test, err_train, std_err_train = k_fold_cv(model, feats, targets)
             shuffled_errors[j, i] = err_test
 
     n_greater_errors_models = np.sum((shuffled_errors > oerrors), axis=1)
