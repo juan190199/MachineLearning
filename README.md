@@ -20,7 +20,13 @@
     * K-Fold Cross Validation
 
 4. Extras
-    * Inverse Transform Sampling
+    * Inverse Transform Sampling: For generative models, one can create data using a random number generator.
+      Specifically, one first samples an instance label Y according to the prior probabilities,
+      and then uses the corresponding likelihood to sample the feature X. If no predefined random
+      generator for the desired likelihood is available, uniformly distributed samples from a
+      standard random number generator can be transformed to the desired distribution by means of
+      'inverse transform sampling' [see reference] (https://en.wikipedia.org/wiki/Inverse_transform_sampling)
+
 
 ### Advanced Machine Learning (AML)
     
