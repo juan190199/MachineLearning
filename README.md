@@ -27,7 +27,7 @@
       and then uses the corresponding likelihood to sample the feature X. If no predefined random
       generator for the desired likelihood is available, uniformly distributed samples from a
       standard random number generator can be transformed to the desired distribution by means of
-      'inverse transform sampling' [see reference] (https://en.wikipedia.org/wiki/Inverse_transform_sampling)
+      'inverse transform sampling' [https://en.wikipedia.org/wiki/Inverse_transform_sampling]
 
 
 ### Advanced Machine Learning (AML)
