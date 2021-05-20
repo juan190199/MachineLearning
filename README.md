@@ -13,6 +13,8 @@
     * Density Tree and Decision Tree
     * Density Forest and Decision Forest
     * Linear Regression and Regression Tree
+    * Bias-Variance Tradeoff
+    * Ridge Regression
 
 2. Unsupervised Learning
 
