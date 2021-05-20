@@ -15,6 +15,8 @@
     * Linear Regression and Regression Tree
     * Bias-Variance Tradeoff
     * Ridge Regression
+    * Automatic Feature Selection for Regression
+      * Orthogonal Matching Pursuit    
 
 2. Unsupervised Learning
 
