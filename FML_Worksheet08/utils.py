@@ -4,12 +4,20 @@ from numpy.linalg import lstsq
 
 def orthogonal_matching_pursuit(X, y, iterations):
     """
+    For every iteration, calculates the optimal weight vector with D dimensions
 
-    :param X:
-    :param y:
+    :param X: ndarray of shape (n_instances, n_features)
+        Design matrix with n_instances instances and dimension n_features
+
+    :param y: ndarray of shape (n_instances, )
+        Output array for n_instances instances
+
     :param iterations: int
-    :return:
+        Number of iterations for calculation of optimal weight vector
+        ToDo: Implement OMP with termination criteria
 
+    :return: ndarray of shape (n_features, iterations)
+        Optimal weight vector for each iteration
     """
     dim = X.shape[1]
     theta_hat = np.zeros((dim, iterations))
@@ -35,10 +43,17 @@ def orthogonal_matching_pursuit(X, y, iterations):
 def pred_acc(X_test, theta, y_test):
     """
 
-    :param X_test:
-    :param theta:
-    :param y_test:
-    :return:
+    :param X_test: ndarray of shape (n_instances, n_features)
+        Test matrix
+
+    :param theta: ndarray of shape (n_features, )
+        Weight vector
+
+    :param y_test: ndarray of shape (n_instances, )
+        Output/target vector
+
+    :return: int
+        Accuracy of predictions
     """
     pred = np.dot(X_test, theta)
     pred[np.where(pred < 0)] = 0
