@@ -7,6 +7,7 @@ import numpy as np
 def data_preparation(digits, filter=None, test_size=0.33, random_seed=12345):
     """
     Prepare data with given filters
+
     :param digits: dict
         Dictionary containing data set.
         digits['data'] contains all features of design matrix
