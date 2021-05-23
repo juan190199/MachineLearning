@@ -30,3 +30,17 @@ def orthogonal_matching_pursuit(X, y, iterations):
         theta_hat[S, it] = theta[0]
 
     return theta_hat
+
+
+def pred_acc(X_test, theta, y_test):
+    """
+
+    :param X_test:
+    :param theta:
+    :param y_test:
+    :return:
+    """
+    pred = np.dot(X_test, theta)
+    pred[np.where(pred < 0)] = 0
+    pred[np.where(pred > 0)] = 1
+    return np.mean(pred == y_test)
