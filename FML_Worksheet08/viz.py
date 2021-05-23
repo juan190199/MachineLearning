@@ -6,11 +6,20 @@ from matplotlib import cm
 
 def plot_data(X_train, X_train_std, y_train, filters):
     """
+    Plot mean of non-standardized data and standardized data
 
-    :param X_train:
-    :param X_train_std:
-    :param y_train:
-    :param filters:
+    :param X_train: ndarray of shape (n_instances, n_features)
+        Design matrix
+
+    :param X_train_std: ndarray of shape (n_instances, n_features)
+        Standardized design matrix
+
+    :param y_train: ndarray of shape (n_instances, )
+        Output vector for train data
+
+    :param filters: list
+        List with target filters
+
     :return:
     """
     targets = np.unique(y_train)
@@ -36,8 +45,17 @@ def plot_data(X_train, X_train_std, y_train, filters):
 
 def plot_theta_omp(theta, theta_std, filters):
     """
+    Plot weight vector for non-standardized data and standardized data
 
-    :param theta:
+    :param theta: ndarray of shape (n_features,)
+        Weight vector
+
+    :param theta_std:
+        Weight vector for standardized data
+
+    :param filters: list
+        List with target filters
+
     :return:
     """
     plt.figure(figsize=(10, 10))
@@ -56,6 +74,17 @@ def plot_theta_omp(theta, theta_std, filters):
 
 
 def plot_acc(acc, acc_std):
+    """
+    Plot accuracy for non-standardized and standardized data with the optimal weight vector for each iteration of OMP
+
+    :param acc: ndarray of shape (2, n_iterations)
+        Accuracy for train and test non-standardized data
+
+    :param acc_std: ndarray of shape (2, n_iterations)
+        Accuracy for train and test standardized data
+
+    :return:
+    """
     plt.plot(acc[0, :], 'r', linestyle='--', label='training acc NOT std')
     plt.plot(acc[1, :], 'r', label='testing acc NOT std')
     plt.plot(acc_std[0, :], 'b', linestyle='--', label='training acc std')
