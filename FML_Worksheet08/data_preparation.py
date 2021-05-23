@@ -28,9 +28,10 @@ def data_preparation(digits, filter=None, test_size=0.33, random_seed=12345):
 
     # Data filtering
     if filter:
+        # List of n_filters ndarrays wit boolean variables for each filter
         filters = [target == f for f in filter]
         mask = np.sum(filters, axis=0)
-        data = data[np.argwhere(mask)]/data.max()
+        data = data[np.argwhere(mask)]
         target = target[np.where(mask)]
 
         # Relable targets
@@ -46,5 +47,10 @@ def data_preparation(digits, filter=None, test_size=0.33, random_seed=12345):
     X_train_std = (X_train - train_mean)/train_std
     # Standardize test data
     X_test_std = (X_test - train_mean)/train_std
+
+    X_train = X_train.squeeze()
+    X_train_std = X_train_std.squeeze()
+    X_test = X_test.squeeze()
+    X_test_std = X_test_std.squeeze()
 
     return X_train, X_train_std, X_test, X_test_std, y_train, y_test
