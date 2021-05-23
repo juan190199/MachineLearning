@@ -43,7 +43,7 @@ def plot_theta_omp(theta, theta_std, filters):
     plt.figure(figsize=(10, 10))
     plt.subplot(121)
     plt.ylabel('Feature')
-    plt.title(r'$\theta$ for OMP classification of {} & {}'.format(filters[0], filters[7]))
+    plt.title(r'$\theta$ for OMP classification of {} & {}'.format(filters[0], filters[1]))
     plt.imshow(theta)
     plt.colorbar()
 
