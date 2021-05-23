@@ -17,12 +17,12 @@ def plot_data(X_train, X_train_std, y_train, filters):
 
     fig, axs = plt.subplots(nrows=len(targets), ncols=2, figsize=(10, 10))
     for i in range(len(targets)):
-        axs[i, 0].imshow(np.array(np.mean(X_train[y_train==i], axis=0)).reshape((8, 8)), cmap='gray')
+        axs[i, 0].imshow(np.array(np.mean(X_train[y_train == i], axis=0)).reshape((8, 8)), cmap='gray')
         fig.colorbar(cm.ScalarMappable(cmap='gray'), ax=axs[i, 0])
         axs[i, 0].set_xticks(())
         axs[i, 0].set_yticks(())
 
-        axs[i, 1].imshow(np.array(np.mean(X_train_std[y_train==i], axis=0)).reshape((8, 8)))
+        axs[i, 1].imshow(np.array(np.mean(X_train_std[y_train == i], axis=0)).reshape((8, 8)))
         fig.colorbar(cm.ScalarMappable(cmap='viridis'), ax=axs[i, 1])
         axs[i, 1].set_xticks(())
         axs[i, 1].set_yticks(())
@@ -52,4 +52,16 @@ def plot_theta_omp(theta, theta_std, filters):
     plt.imshow(theta_std)
     plt.title(r'$\theta$ for OMP classification of 1 & 7 (standardized)')
     plt.colorbar()
+    plt.show()
+
+
+def plot_acc(acc, acc_std):
+    plt.plot(acc[0, :], 'r', linestyle='--', label='training acc NOT std')
+    plt.plot(acc[1, :], 'r', label='testing acc NOT std')
+    plt.plot(acc_std[0, :], 'b', linestyle='--', label='training acc std')
+    plt.plot(acc_std[1, :], 'b', label='testing acc std')
+    plt.ylabel('Accuracy')
+    plt.xlabel('t-1')
+    plt.legend()
+    plt.tight_layout()
     plt.show()
