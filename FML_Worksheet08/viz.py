@@ -132,7 +132,3 @@ def plot_pixel(theta, mean=np.ones(64)):
         plt.axis('off')
         plt.title('Votes for {}'.format(vote))
         plt.imshow(im_v, vmin=0, vmax=2, cmap='jet')
-
-
-def plot_pixel_soutput(theta, mean=np.ones(64)):
-    pass
