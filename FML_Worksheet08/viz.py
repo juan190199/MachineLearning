@@ -94,3 +94,45 @@ def plot_acc(acc, acc_std):
     plt.legend()
     plt.tight_layout()
     plt.show()
+
+
+def plot_pixel(theta, mean=np.ones(64)):
+    """
+    Plot the order of pixels/features added to the correct subset of OMP with its target
+    :param theta: ndarray of shape (n_features, n_iterations)
+        Optimal weight vector for each iteration of OMP
+
+    :param mean:
+    :return:
+    """
+    old_idx = []
+    im = np.zeros((8, 8))
+    im_v = np.zeros((8, 8))
+    for j in range(theta.shape[1]):
+        idx = np.where(theta[:, j] != 0)
+        for i in idx[0]:
+            if i not in old_idx:
+                new = i
+                iu = np.unravel_index(i, (8, 8))
+                im[iu] = theta.shape[1] + 1 - j
+                old_idx.append(i)
+                if theta[i, j] * mean[i] > 0:
+                    vote = 1
+                    im_v[iu] = 1
+                else:
+                    vote = 7
+                    im_v[iu] = 2
+
+        plt.figure()
+        plt.subplot(121)
+        plt.axis('off')
+        plt.title('Add pixel {} ≡ {}'.format(new, iu))
+        plt.imshow(im, vmin=0, vmax=theta.shape[1] + 1, cmap='jet')
+        plt.subplot(122)
+        plt.axis('off')
+        plt.title('Votes for {}'.format(vote))
+        plt.imshow(im_v, vmin=0, vmax=2, cmap='jet')
+
+
+def plot_pixel_soutput(theta, mean=np.ones(64)):
+    pass
