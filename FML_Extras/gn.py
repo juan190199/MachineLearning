@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 class GaussNewton:
     """
-    Gauss-Newton: Given output vector y, design matrix X and model f, minimize the squared sum of residuals
+    Gaussian-Newton: Given output vector y, design matrix X and model f, minimize the squared sum of residuals
     """
 
     def __init__(self,
