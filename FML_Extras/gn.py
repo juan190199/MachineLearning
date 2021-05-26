@@ -7,7 +7,7 @@ from numpy.linalg import pinv
 logger = logging.getLogger(__name__)
 
 
-class GaussNewton:
+class GaussianNewton:
     """
     Gaussian-Newton: Given output vector y, design matrix X and model f, minimize the squared sum of residuals
 
@@ -108,7 +108,7 @@ class GaussNewton:
         :param coefficients:
         :return:
         """
-        y_fit = self.hypothesis(self.X, self.coefficients_)
+        y_fit = self.hypothesis_(self.X, self.coefficients_)
         return self.y - y_fit
 
     def _calculate_jacobian(self, x0: np.ndarray, step: float = 1e-6) -> np.ndarray:
