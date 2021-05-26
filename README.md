@@ -16,7 +16,10 @@
     * Bias-Variance Tradeoff
     * Ridge Regression
     * Automatic Feature Selection for Regression
-      * Orthogonal Matching Pursuit    
+      * Orthogonal Matching Pursuit
+    * Non-linear Regression
+      * Gaussian-Newton Algorithm
+      * Levenberg–Marquardt Algorithm
 
 2. Unsupervised Learning
 
