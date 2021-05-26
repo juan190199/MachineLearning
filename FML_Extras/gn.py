@@ -10,6 +10,10 @@ logger = logging.getLogger(__name__)
 class GaussNewton:
     """
     Gaussian-Newton: Given output vector y, design matrix X and model f, minimize the squared sum of residuals
+
+    Attributes
+    -----------
+    *
     """
 
     def __init__(self,
@@ -114,7 +118,18 @@ class GaussNewton:
         :param step:
         :return:
         """
-        ...
+        y0 = self._calculate_residual(x0)
+
+        jacobian = []
+        for i, parameter in enumerate(x0):
+            x = x0.copy()
+            x[i] += step
+            y = self._calculate_residual(x)
+            derivative = (y - y0) / step
+            jacobian.append(derivative)
+
+        jacobian = np.asarray(jacobian).T
+        return jacobian
 
     @staticmethod
     def _calculate_pseudoinverse(X: np.ndarray) -> np.ndarray:
