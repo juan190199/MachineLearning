@@ -76,39 +76,40 @@ class GaussNewton:
         logger.info("Max. number of iterations reached. Fit didn't converge.")
         return self.coefficients_
 
-    def predict(self, x: np.ndarray):
+    def predict(self, X: np.ndarray):
         """
-
-        :param x:
+        Predict response for given X based on fitted coefficients
+        :param X:
         :return:
         """
-        ...
+        return self.hypothesis_(X, self.coefficients_)
 
     def get_residual(self) -> np.ndarray:
         """
-
+        Get residual after fit
         :return:
         """
-        ...
+        return self._calculate_residual(self.coefficients_)
 
     def get_estimate(self) -> np.ndarray:
         """
-
+        Get estimated response vector based on fitted coefficients
         :return:
         """
-        ...
+        return self.hypothesis_(self.X, self.coefficients_)
 
     def _calculate_residual(self, coefficients: np.ndarray) -> np.ndarray:
         """
-
+        Calculate residual
         :param coefficients:
         :return:
         """
-        ...
+        y_fit = self.hypothesis(self.X, self.coefficients_)
+        return self.y - y_fit
 
     def _calculate_jacobian(self, x0: np.ndarray, step: float = 1e-6) -> np.ndarray:
         """
-
+        Calculate Jacobian matrix numerically
         :param x0:
         :param step:
         :return:
@@ -116,10 +117,10 @@ class GaussNewton:
         ...
 
     @staticmethod
-    def _calculate_pseudoinverse(x: np.ndarray) -> np.ndarray:
+    def _calculate_pseudoinverse(X: np.ndarray) -> np.ndarray:
         """
-
-        :param x:
+        Calculate Moore-Penrose pseudoinverse
+        :param X:
         :return:
         """
-        ...
+        return pinv(np.dot(np.dot(X.T, X), X.T))
