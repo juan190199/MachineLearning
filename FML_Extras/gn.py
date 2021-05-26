@@ -76,21 +76,50 @@ class GaussNewton:
         logger.info("Max. number of iterations reached. Fit didn't converge.")
         return self.coefficients_
 
-    def predict(self):
+    def predict(self, x: np.ndarray):
+        """
+
+        :param x:
+        :return:
+        """
         ...
 
-    def get_residual(self):
+    def get_residual(self) -> np.ndarray:
+        """
+
+        :return:
+        """
         ...
 
-    def get_estimate(self):
+    def get_estimate(self) -> np.ndarray:
+        """
+
+        :return:
+        """
         ...
 
-    def _calculate_residual(self):
+    def _calculate_residual(self, coefficients: np.ndarray) -> np.ndarray:
+        """
+
+        :param coefficients:
+        :return:
+        """
         ...
 
-    def _calculate_jacobian(self):
+    def _calculate_jacobian(self, x0: np.ndarray, step: float = 1e-6) -> np.ndarray:
+        """
+
+        :param x0:
+        :param step:
+        :return:
+        """
         ...
 
     @staticmethod
     def _calculate_pseudoinverse(x: np.ndarray) -> np.ndarray:
+        """
+
+        :param x:
+        :return:
+        """
         ...
