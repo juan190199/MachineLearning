@@ -13,7 +13,7 @@ class GaussianNewton:
 
     Attributes
     -----------
-    *
+    *hypothesis
     """
 
     def __init__(self,
