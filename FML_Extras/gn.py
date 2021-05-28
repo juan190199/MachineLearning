@@ -13,7 +13,16 @@ class GaussianNewton:
 
     Attributes
     -----------
-    *hypothesis
+    * hypothesis_: Callable
+
+    * max_iter_: int, default=1000
+
+    * tolerance_difference_: float, default=1e-16
+
+    * tolerance_: float, default=1e-9
+
+    * init_guess_: np.ndarray, default=None
+
     """
 
     def __init__(self,
