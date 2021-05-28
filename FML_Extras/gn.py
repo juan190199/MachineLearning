@@ -70,7 +70,7 @@ class GaussianNewton:
         for k in range(self.max_iter_):
             residual = self.get_residual()
             jacobian = self._calculate_jacobian(self.coefficients_, step=1e-6)
-            self.coefficients_ = self.coefficients_ - np.dot(self._calculate_pseudoinverse(jacobian), residual)
+            self.coefficients_ = self.coefficients_ - np.dot(self._calculate_pseudoinverse(jacobian).T, residual)
             rmse = np.sqrt(np.sum(residual ** 2))
             logger.info(f"Round {k}: RMSE {rmse}")
 
