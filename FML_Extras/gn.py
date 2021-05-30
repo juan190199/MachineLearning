@@ -19,6 +19,7 @@ class GaussianNewton:
     def __init__(self,
                  hypothesis,
                  max_iter=1000,
+                 conv=1e-6,
                  tol_dif=1e-16,
                  tol=1e-9):
         """
@@ -28,6 +29,9 @@ class GaussianNewton:
 
         :param max_iter: int, default=1000
             Maximum number of iterations
+
+        :param conv: float, default=1e-6
+            Convergence criteria. np.abs((lse_prev - lse) / lse_prev)
 
         :param tol_dif: float, default=1e-16
             Tolerance for difference between previous least squares and actual least squares
@@ -40,6 +44,7 @@ class GaussianNewton:
         """
         self.hypothesis_ = hypothesis
         self.max_iter_ = max_iter
+        self.conv_ = conv
         self.tol_dif_ = tol_dif
         self.tol_ = tol
         self.parameters_ = None
@@ -72,13 +77,20 @@ class GaussianNewton:
         for k in range(self.max_iter_):
             residual = self.get_residual()
             jacobian = self._calculate_jacobian(self.parameters_, step=1e-6)
-            new_parameters = self.parameters_ + np.dot(self._calculate_pseudoinverse(jacobian).T, residual)
+            new_parameters = self.parameters_ - np.dot(self._calculate_pseudoinverse(jacobian).T, residual)
             lse = np.sum(residual ** 2)
-            logger.info(f"Round {k}: RMSE {lse}")
+            logger.info(f"Round {k}: LSE {lse}")
+
+            if self.conv_ is not None:
+                diff = np.abs((lse_prev - lse) / lse_prev)
+                if diff < self.conv_:
+                    logger.info("Convergence criteria reached. Fit terminated.")
+                    self.parameters_ = new_parameters
+                    return self.parameters_
 
             if self.tol_dif_ is not None:
-                diff = np.abs(lse_prev, lse)
-                if diff < self.tolerance_difference_:
+                diff = np.abs(lse_prev - lse)
+                if diff < self.tol_dif_:
                     logger.info("LSE difference between iterations smaller than tolerance. Fit terminated.")
                     self.parameters_ = new_parameters
                     return self.parameters_
@@ -89,9 +101,9 @@ class GaussianNewton:
                 return self.parameters_
 
             lse_prev = lse
+            self.parameters_ = new_parameters
 
         logger.info("Max. number of iterations reached. Fit didn't converge.")
-        self.parameters_ = new_parameters
         return self.parameters_
 
     def predict(self, X):
@@ -122,17 +134,35 @@ class GaussianNewton:
         :param parameters:
         :return:
         """
-        y_est = self.hypothesis_(self.X, self.parameters_)
+        y_est = self.hypothesis_(self.X, parameters)
         return self.y - y_est
 
-    def _calculate_jacobian(self, x0, step=1e-6):
+    def _calculate_jacobian(self, theta0, step=1e-6):
         """
+        Calculate Jacobian matrix numerically at x0
+        :param theta0: np.ndarray of shape (n_dim, 1)
 
-        :param x0:
-        :param step:
+
+        :param step: float, default=1e-6
+            Increment for numerical approximation
+
         :return:
         """
-        ...
+        jacobian = []
+        for i, parameter in enumerate(theta0):
+            l_theta = theta0.copy()
+            u_theta = theta0.copy()
+            l_theta[i] -= step
+            u_theta[i] += step
+            l_residual = self._calculate_residual(l_theta)
+            u_residual = self._calculate_residual(u_theta)
+
+            part_derivative = (u_residual - l_residual) / (2 * step)
+            jacobian.append(part_derivative)
+
+        jacobian = np.asarray(jacobian).squeeze().T
+
+        return jacobian
 
     @staticmethod
     def _calculate_pseudoinverse(X):
@@ -141,4 +171,4 @@ class GaussianNewton:
         :param X:
         :return:
         """
-        ...
+        return pinv(np.dot(np.dot(X.T, X), X.T))
