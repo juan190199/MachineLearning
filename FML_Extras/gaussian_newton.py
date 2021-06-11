@@ -1,5 +1,5 @@
 import numpy as np
-import simpy as sp
+import sympy as sp
 
 
 class GaussianNewton:
@@ -26,16 +26,16 @@ class GaussianNewton:
             Nested set of initial guesses or starting estimates for the least squares solution
         """
         self.init_guess_ = init_guess
-        self.symbols_ = symbols
+        self.symbols = symbols
 
-        self.X_, self.y_, self.cvals = X, y, cvals
+        self.X, self.y, self.cvals = X, y, cvals
 
         self._x, self._b = symbols[0], symbols[1:]
 
         # SimPy expressions
         self._symexpr = sp.sympify(expr)
         # Numpy expression
-        self._numexpr = sp.lambdify((self._x,) + self._b, self.symexpr, 'numpy')
+        self._numexpr = sp.lambdify((self._x,) + self._b, self._symexpr, 'numpy')
         # Partial derivatives
         self._pderivs = [self._symexpr.diff(b) for b in self._b]
 
@@ -46,7 +46,7 @@ class GaussianNewton:
         :param b:
         :return:
         """
-        if X is None: X = self.X_
+        if X is None: X = self.X
         if b is None: b = self.cvals
         return self._numexpr(X, *b)
 
@@ -56,14 +56,14 @@ class GaussianNewton:
         :param b:
         :return:
         """
-        X, y = self.X_, self.y_
+        X, y = self.X, self.y
         return y - self._numexpr(X, *b)
 
     def jacobian(self, b):
         # Substitute parameter in partial derivatives
         subs = [pd.subs(zip(self._b, b)) for pd in self._pderivs]
         # Evaluate substituted partial derivatives for all x values
-        vals = [sp.lambdify(self._x, sub, 'numpy')(self.X_) for sub in subs]
+        vals = [sp.lambdify(self._x, sub, 'numpy')(self.X) for sub in subs]
         # Arrange values in column-major order
         return np.column_stack(vals)
 
