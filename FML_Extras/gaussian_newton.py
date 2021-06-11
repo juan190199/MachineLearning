@@ -41,10 +41,16 @@ class GaussianNewton:
 
     def hypothesis(self, X=None, b=None):
         """
+        Evaluate the model
 
-        :param X:
-        :param b:
-        :return:
+        :param X: ndarray, default=None
+            Values for the design matrix
+
+        :param b: tuple, list or ndarray, default=None
+            Values for the model parameters
+
+        :return: ndarray
+            Corresponding values for the response variable
         """
         if X is None: X = self.X
         if b is None: b = self.cvals
@@ -52,14 +58,27 @@ class GaussianNewton:
 
     def residual(self, b):
         """
+        Evaluate the residuals y - h(x; theta) with the given parameters
 
-        :param b:
-        :return:
+        :param b: tuple, list or ndarray
+            Values for the model parameters
+
+        :return: ndarray
+            Residual vector for the given model parameters
         """
         X, y = self.X, self.y
         return y - self._numexpr(X, *b)
 
     def jacobian(self, b):
+        """
+        Evaluate model's Jacobian matrix with given parameters
+
+        :param b:  tuple, list or ndarray
+            Values for the model parameters
+
+        :return: ndarray
+            Model's Jacobian matrix in column-major order wrt. model parameters
+        """
         # Substitute parameter in partial derivatives
         subs = [pd.subs(zip(self._b, b)) for pd in self._pderivs]
         # Evaluate substituted partial derivatives for all x values
@@ -69,6 +88,7 @@ class GaussianNewton:
 
     def fit(self, init_guess, tol=1e-10, maxits=256):
         """
+        Solve Least Squares Problems with Gauss-Newton algorithm.
 
         :param init_guess: tuple, list or ndarray
             Initial guess for the algorithm
@@ -79,7 +99,14 @@ class GaussianNewton:
         :param maxits: int, default=256
             Maximum number of iterations
 
-        :return:
+        :return: tuple
+            ndarray -- Resultant values
+            int -- Number of iterations performed
+
+        Note
+        -----
+        Uses numpy.linalg.pinv() in place of similar functions from scipy, both
+        because it was found to be faster and to eliminate the extra dependency.
         """
         dx = np.ones(len(init_guess))
         xn = np.array(init_guess)
