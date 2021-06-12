@@ -3,6 +3,10 @@ import sympy as sp
 
 
 class GaussianNewton:
+    """
+    Gaussian-Newton algorithm for solving non linear least squares problems.
+    The Gaussian-Newton algorithm minimizes the sum of squared function values
+    """
     def __init__(self, expr, symbols, X, y, cvals, init_guess):
         """
 
