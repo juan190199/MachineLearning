@@ -18,8 +18,8 @@
     * Automatic Feature Selection for Regression
       * Orthogonal Matching Pursuit
     * Non-linear Regression
-      * Gaussian-Newton Algorithm
-      * Levenberg–Marquardt Algorithm
+      * Gaussian-Newton Algorithm 
+<!--       * Levenberg–Marquardt Algorithm -->
 
 2. Unsupervised Learning
 
