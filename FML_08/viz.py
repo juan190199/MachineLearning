@@ -142,3 +142,12 @@ def plot_theta_viz(theta_classes, T_one_vs_rest):
     plt.ylabel('Features')
     plt.colorbar()
     plt.show()
+
+
+def plot_unknown_data(unknowns, X_test, y_test, y_predict):
+    for u in unknowns:
+        plt.figure()
+    plt.imshow(X_test[u, :].reshape(8, 8), cmap='gray')
+    plt.axis('off')
+    plt.title('Test image {}, if not "unkn": prediction = {}, true label = {}'.format(u, y_predict[u], y_test[u]))
+    plt.show()
