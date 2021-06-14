@@ -132,3 +132,13 @@ def plot_pixel(theta, mean=np.ones(64)):
         plt.axis('off')
         plt.title('Votes for {}'.format(vote))
         plt.imshow(im_v, vmin=0, vmax=2, cmap='jet')
+
+
+def plot_theta_viz(theta_classes, T_one_vs_rest):
+    plt.figure(figsize=(16, 10))
+    plt.imshow(theta_classes, cmap='jet')
+    plt.title(r'Visualization of $\theta$ with T = ' + str(T_one_vs_rest))
+    plt.xlabel('Classes')
+    plt.ylabel('Features')
+    plt.colorbar()
+    plt.show()
