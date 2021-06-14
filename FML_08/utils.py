@@ -1,6 +1,8 @@
 import numpy as np
 from numpy.linalg import lstsq
 
+from sklearn.utils import shuffle
+
 
 def orthogonal_matching_pursuit(X, y, iterations):
     """
@@ -59,3 +61,36 @@ def pred_acc(X_test, theta, y_test):
     pred[np.where(pred < 0)] = 0
     pred[np.where(pred > 0)] = 1
     return np.mean(pred == y_test)
+
+
+def one_vs_rest(num, X_train, y_train):
+    """
+    Filter one digit from the training set and
+    creates a balanced training set by completing with digits of other classes
+
+    :param num:
+    :param X_train:
+    :param y_train:
+    :return:
+    """
+    X_train, y_train = shuffle(X_train, y_train, random_state=0)
+
+    # Data filtering for num
+    X_num = X_train[y_train == num]
+    y_num = y_train[y_train == num]
+    # Data filtering for other classes
+    X_rest = X_train[y_train != num]
+    X_rest = X_rest[:X_num.shape[0], :]  # Slice for balanced training set
+    y_rest = y_train[y_train != num]
+    y_rest = y_rest[:X_num.shape[0]]
+
+    X_train = np.concatenate((X_num, X_rest))
+    y_train = np.concatenate((y_num, y_rest))
+
+    y_rest[y_train != num] = -1
+    y_train[y_train == num] = 1
+
+    # Random shuffle
+    X_train, y_train = shuffle(X_train, y_train, random_state=0)
+
+    return X_train, y_train
