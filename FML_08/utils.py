@@ -87,7 +87,7 @@ def one_vs_rest(num, X_train, y_train):
     X_train = np.concatenate((X_num, X_rest))
     y_train = np.concatenate((y_num, y_rest))
 
-    y_rest[y_train != num] = -1
+    y_train[y_train != num] = -1
     y_train[y_train == num] = 1
 
     # Random shuffle
