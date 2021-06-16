@@ -135,6 +135,12 @@ def plot_pixel(theta, mean=np.ones(64)):
 
 
 def plot_theta_viz(theta_classes, T_one_vs_rest):
+    """
+
+    :param theta_classes:
+    :param T_one_vs_rest:
+    :return:
+    """
     plt.figure(figsize=(16, 10))
     plt.imshow(theta_classes, cmap='jet')
     plt.title(r'Visualization of $\theta$ with T = ' + str(T_one_vs_rest))
@@ -145,6 +151,14 @@ def plot_theta_viz(theta_classes, T_one_vs_rest):
 
 
 def plot_unknown_data(unknowns, X_test, y_test, y_predict):
+    """
+
+    :param unknowns:
+    :param X_test:
+    :param y_test:
+    :param y_predict:
+    :return:
+    """
     for u in unknowns:
         plt.figure()
         plt.imshow(X_test[u, :].reshape(8, 8), cmap='gray')
