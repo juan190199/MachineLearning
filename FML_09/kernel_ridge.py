@@ -81,10 +81,10 @@ class KernelRidge():
         :return:
         """
         K = self.compute_kernel_matrix(X, X)
-        self.betas = sp.dot(inv(K + self.C * np.eye(np.shape(K)[0])),
+        self.alphas = sp.dot(inv(K + self.C * np.eye(np.shape(K)[0])),
                             y.transpose())
 
-        return self.betas
+        return self.alphas
 
     def predict(self, X_train, X_test):
         """
@@ -93,3 +93,7 @@ class KernelRidge():
         :param X_test:
         :return:
         """
+        K = self.compute_kernel_matrix(X_test, X_train)
+
+        y_test = sp.dot(K, self.alphas)
+        return y_test.transpose
