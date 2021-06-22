@@ -1,4 +1,6 @@
 import numpy as np
+import scipy as sp
+from numpy.linalg import inv
 from scipy import linalg
 
 
@@ -46,10 +48,14 @@ class KernelRidge():
 
     def compute_kernel_matrix(self, X1, X2):
         """
+        Compute Gram matrix given two input matrices
 
-        :param X1:
-        :param X2:
-        :return:
+        :param X1: np.ndarray of shape ()
+
+        :param X2: np.ndarray of shape ()
+
+        :return: np.ndarray of shape (X1.shape[0], X2.shape[0])
+            Kernel matrix (Gram matrix)
         """
         n1 = X1.shape[0]
         n2 = X2.shape[0]
@@ -64,8 +70,26 @@ class KernelRidge():
 
     def fit(self, X, y):
         """
+        Training kernel ridge regression
 
-        :param X:
-        :param y:
+        :param X: np.ndarray of shape (n, d)
+            Design matrix with n d-dimensional instances
+
+        :param y: np.ndarray of shape (n, 1)
+            output vector for design matrix
+
+        :return:
+        """
+        K = self.compute_kernel_matrix(X, X)
+        self.betas = sp.dot(inv(K + self.C * np.eye(np.shape(K)[0])),
+                            y.transpose())
+
+        return self.betas
+
+    def predict(self, X_train, X_test):
+        """
+
+        :param X_train:
+        :param X_test:
         :return:
         """
