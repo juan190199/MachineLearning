@@ -7,9 +7,10 @@ from scipy import linalg
 # https://github.com/supenova1604/kernel_ridge_regr/blob/master/kerner_ridge_regr.py
 # https://github.com/ptocca/KRRPM/blob/main/src/krrpm/krrpm.py
 
-class KernelRidge():
-    """"""
+class KernelRidge:
+    """
 
+    """
     def __init__(self, kernel_type='linear', C=1.0, gamma=5.0):
         """
 
@@ -67,6 +68,23 @@ class KernelRidge():
                 K[i, j] = self.kernel(X1[i], X2[j])
 
         return K
+
+    def compute_kernel_sparse_matrix(self, X1, X2):
+        """
+
+        :param X1:
+        :param X2:
+        :return:
+        """
+        n1 = X1.shape[0]
+        n2 = X2.shape[0]
+
+        sparse_K = sp.sparse.dok_matrix((n1, n2))
+        for i in range(n1):
+            for j in range(n2):
+                sparse_K[i, j] = self.kernel(X1, X2)
+
+        return sparse_K.tocsc()
 
     def fit(self, X, y):
         """
