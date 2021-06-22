@@ -44,4 +44,28 @@ class KernelRidge():
         gamma = self.gamma
         return np.exp(-linalg.norm(x1 - x2) ** 2 / (2 * (gamma ** 2)))
 
+    def compute_kernel_matrix(self, X1, X2):
+        """
 
+        :param X1:
+        :param X2:
+        :return:
+        """
+        n1 = X1.shape[0]
+        n2 = X2.shape[0]
+
+        # Gram matrix
+        K = np.zeros((n1, n2))
+        for i in range(n1):
+            for j in range(n2):
+                K[i, j] = self.kernel(X1[i], X2[j])
+
+        return K
+
+    def fit(self, X, y):
+        """
+
+        :param X:
+        :param y:
+        :return:
+        """
