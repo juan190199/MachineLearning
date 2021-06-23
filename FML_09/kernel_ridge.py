@@ -1,5 +1,6 @@
 import numpy as np
 import scipy as sp
+import scipy.linalg
 from numpy.linalg import inv
 from scipy import linalg
 
@@ -11,6 +12,7 @@ class KernelRidge:
     """
 
     """
+
     def __init__(self, kernel_type='linear', C=1.0, gamma=5.0):
         """
 
@@ -29,7 +31,8 @@ class KernelRidge:
         self.kernels = {
             'linear': self.kernel_linear,
             'quadratic': self.kernel_quadratic,
-            'gaussian': self.kernel_gaussian
+            'gaussian': self.kernel_gaussian,
+            's_gaussian': self.sparse_kernel_gaussian
         }
         self.kernel_type = kernel_type
         self.kernel = self.kernels[self.kernel_type]
@@ -46,6 +49,17 @@ class KernelRidge:
     def kernel_gaussian(self, x1, x2, gamma=5.0):
         gamma = self.gamma
         return np.exp(-linalg.norm(x1 - x2) ** 2 / (2 * (gamma ** 2)))
+
+    def sparse_kernel_gaussian(self, x1, x2, gamma=5.0):
+        gamma = self.gamma
+        # norm = np.linalg.norm(x1, x2, axis=-1, dtype=float)
+        # print(norm.shape)
+        norm = np.sum((x1 - x2) ** 2, axis=-1, dtype=float)
+
+        # Cutoff:
+        norm[norm > 30 * (gamma ** 2)] = np.inf
+
+        return np.exp(-(norm ** 2) / (2 * (gamma ** 2)))
 
     def compute_kernel_matrix(self, X1, X2):
         """
@@ -80,9 +94,12 @@ class KernelRidge:
         n2 = X2.shape[0]
 
         sparse_K = sp.sparse.dok_matrix((n1, n2))
-        for i in range(n1):
-            for j in range(n2):
-                sparse_K[i, j] = self.kernel(X1, X2)
+        idx1 = np.arange(n1)
+        idx2 = np.arange(n2)
+
+        for i in idx1:
+            k = self.kernel(X1[i], X2)
+            sparse_K[i, idx2[k != 0]] = k[k != 0]
 
         return sparse_K.tocsc()
 
@@ -98,9 +115,10 @@ class KernelRidge:
 
         :return:
         """
-        K = self.compute_kernel_matrix(X, X)
+        # K = self.compute_kernel_matrix(X, X)
+        K = self.compute_kernel_sparse_matrix(X, X)
         self.alphas = sp.dot(inv(K + self.C * np.eye(np.shape(K)[0])),
-                            y.transpose())
+                             y.transpose())
 
         return self.alphas
 
@@ -112,6 +130,7 @@ class KernelRidge:
         :return:
         """
         K = self.compute_kernel_matrix(X_test, X_train)
+        # K = self.compute_kernel_sparse_matrix(X_test, X_train)
 
         y_test = sp.dot(K, self.alphas)
         return y_test.transpose
