@@ -1,9 +1,9 @@
 import numpy as np
 import scipy as sp
 import scipy.linalg
+import scipy.sparse.linalg
 from numpy.linalg import inv
 from scipy import linalg
-
 
 # https://github.com/supenova1604/kernel_ridge_regr/blob/master/kerner_ridge_regr.py
 # https://github.com/ptocca/KRRPM/blob/main/src/krrpm/krrpm.py
@@ -52,12 +52,10 @@ class KernelRidge:
 
     def sparse_kernel_gaussian(self, x1, x2, gamma=5.0):
         gamma = self.gamma
-        # norm = np.linalg.norm(x1, x2, axis=-1, dtype=float)
-        # print(norm.shape)
         norm = np.sum((x1 - x2) ** 2, axis=-1, dtype=float)
 
-        # Cutoff:
-        norm[norm > 30 * (gamma ** 2)] = np.inf
+        # Cutoff
+        norm[norm > 30 * (gamma ** 2)] = 0
 
         return np.exp(-(norm ** 2) / (2 * (gamma ** 2)))
 
@@ -83,7 +81,7 @@ class KernelRidge:
 
         return K
 
-    def compute_kernel_sparse_matrix(self, X1, X2):
+    def compute_sparse_kernel_matrix(self, X1, X2):
         """
 
         :param X1:
@@ -103,7 +101,7 @@ class KernelRidge:
 
         return sparse_K.tocsc()
 
-    def fit(self, X, y):
+    def fit(self, X, y, sparse=False):
         """
         Training kernel ridge regression
 
@@ -115,10 +113,13 @@ class KernelRidge:
 
         :return:
         """
-        # K = self.compute_kernel_matrix(X, X)
-        K = self.compute_kernel_sparse_matrix(X, X)
-        self.alphas = sp.dot(inv(K + self.C * np.eye(np.shape(K)[0])),
-                             y.transpose())
+        if sparse is False:
+            K = self.compute_kernel_matrix(X, X)
+            self.alphas = sp.dot(inv(K + self.C * np.eye(np.shape(K)[0])),
+                                 y.transpose())
+        else:
+            sparse_K = self.compute_sparse_kernel_matrix(X, X)
+            self.alphas = scipy.sparse.linalg.spsolve(sparse_K + self.C * np.eye(np.shape(sparse_K)[0]), y)
 
         return self.alphas
 
