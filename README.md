@@ -20,6 +20,7 @@
     * Non-linear Regression
       * Gaussian-Newton Algorithm 
       * Levenberg–Marquardt Algorithm
+    * Kernel Ridge Regression
 
 2. Unsupervised Learning
 
