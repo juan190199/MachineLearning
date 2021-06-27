@@ -123,15 +123,17 @@ class KernelRidge:
 
         return self.alphas
 
-    def predict(self, X_train, X_test):
+    def predict(self, X_train, X_test, sparse=False):
         """
 
         :param X_train:
         :param X_test:
         :return:
         """
-        K = self.compute_kernel_matrix(X_test, X_train)
-        # K = self.compute_kernel_sparse_matrix(X_test, X_train)
+        if sparse is False:
+            K = self.compute_kernel_matrix(X_test, X_train)
+        else:
+            K = self.compute_sparse_kernel_matrix(X_test, X_train)
 
         y_test = sp.dot(K, self.alphas)
         return y_test.transpose
