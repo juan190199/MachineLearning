@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 
+from utils import refine_fit
+
 
 def plot_circles_and_data(model, outliers):
     """
@@ -21,3 +23,16 @@ def plot_circles_and_data(model, outliers):
 
     plt.tight_layout()
 
+
+def show_refined_circles(models):
+    circle_handles = []
+    for method, color in [('algebraic', 'blue'), ('lm', 'orange')]:
+
+        fit_models = refine_fit(models, method)
+        for cr in fit_models:
+            circle = plt.Circle(cr[:2], radius=cr[2], fill=False, edgecolor=color)
+            plt.gca().add_patch(circle)
+        # Remember the last circle for the legend
+        circle_handles.append(circle)
+
+    plt.legend(handles=circle_handles, labels=['Algebraic distance', 'Levenberg-Marquardt'])
