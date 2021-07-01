@@ -21,6 +21,7 @@
       * Gaussian-Newton Algorithm 
       * Levenberg–Marquardt Algorithm
     * Kernel Ridge Regression
+    * Robust Regression: RANSAC
 
 2. Unsupervised Learning
 
@@ -36,5 +37,9 @@
       generator for the desired likelihood is available, uniformly distributed samples from a
       standard random number generator can be transformed to the desired distribution by means of
       'inverse transform sampling' ([see reference](https://en.wikipedia.org/wiki/Inverse_transform_sampling))
+      
+***
+
+### Advanced Machine Learning (FML)
 
     
