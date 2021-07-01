@@ -104,7 +104,7 @@ class KernelRidge:
 
     def fit(self, X, y, sparse=False):
         """
-
+        Fit Kernel Ridge model
         :param self:
         :param X:
         :param y:
