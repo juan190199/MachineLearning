@@ -24,7 +24,7 @@ def plot_circles_and_data(model, outliers):
     plt.tight_layout()
 
 
-def show_refined_circles(models):
+def plot_refined_circles(models):
     circle_handles = []
     for method, color in [('algebraic', 'blue'), ('lm', 'orange')]:
 
