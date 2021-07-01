@@ -1,5 +1,7 @@
 import numpy as np
 
+from scipy.optimize import least_squares
+
 
 def to_img(img, X_new, y_new):
     """
@@ -36,3 +38,25 @@ def circle_from_points(points):
         return np.NaN * np.zeros(2), np.NaN
     else:
         return c + offset, r
+
+
+def refine_fit(models, method):
+
+    fit_models = []
+    for circle in models:
+
+        def cost(circ):
+            c, r = circ[:2], circ[2]
+
+            if method == 'algebraic':
+                return np.sum(np.linalg.norm(circle['MCS'] - c, axis=1) ** 2 - r ** 2)
+
+            elif method == 'lm':
+                return np.sum(np.linalg.norm(circle['MCS'] - c, axis=1) - r)
+
+        # Use the RANSAC result as the best guess
+        guess = np.concatenate((circle['c'], [circle['r']]))
+        fit = least_squares(cost, guess)
+        fit_models.append(fit.x)
+
+    return fit_models
