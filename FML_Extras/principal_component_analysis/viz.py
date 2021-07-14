@@ -1,20 +1,40 @@
 import numpy as np
-from mpl_toolkits.mplot3d import Axes3D
-
 import matplotlib.pyplot as plt
 
 
-def plot_figs(fig_num, elev, azim, coord_dens):
-    fig = plt.figure(fig_num, figsize=(4, 3))
-    plt.clf()
-    ax = Axes3D(fig, rect=[0, 0, .95, 1], elev=elev, azim=azim)
-    a, b, c, density = coord_dens
-    ax.scatter(a[::10], b[::10], c[::10], c=density[::10], marker='+', alpha=.4)
-    Y = np.c_[a, b, c]
+def plot_figure(X1, Y, X2=None, figsize=(8, 4)):
+    """
 
-    ax.w_xaxis.set_ticklabels([])
-    ax.w_yaxis.set_ticklabels([])
-    ax.w_zaxis.set_ticklabels([])
+    :param X:
+    :param y:
+    :return:
+    """
+    if X2 is not None:
+        plt.figure(figsize=figsize)
+        plt.subplot(121)
+        plt.title('My PCA')
+        plt.scatter(X1[:, 0], X1[:, 1], c=Y)
 
-    plt.show()
+        plt.xticks([])
+        plt.yticks([])
+        plt.tight_layout()
 
+        plt.figure(figsize=figsize)
+        plt.subplot(122)
+        plt.title('sklearn PCA')
+        plt.scatter(X2[:, 0], X2[:, 1], c=Y)
+
+        plt.xticks([])
+        plt.yticks([])
+        plt.tight_layout()
+        plt.show()
+
+    else:
+        plt.figure(figsize=figsize)
+        plt.title("My PCA")
+        plt.scatter(X1[:, 0], X1[:, 1], c=Y)
+
+        plt.xticks([])
+        plt.yticks([])
+        plt.tight_layout()
+        plt.show()
