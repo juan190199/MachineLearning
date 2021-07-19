@@ -37,6 +37,8 @@
       generator for the desired likelihood is available, uniformly distributed samples from a
       standard random number generator can be transformed to the desired distribution by means of
       'inverse transform sampling' ([see reference](https://en.wikipedia.org/wiki/Inverse_transform_sampling))
+     
+    * Principal Component Analysis
       
 ***
 
