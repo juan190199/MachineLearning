@@ -14,7 +14,7 @@ def pca(X, n_dim):
 
     """
     X = X - np.mean(X, axis=0, keepdims=True)
-
+    print(X)
     cov = np.dot(X.T, X)
 
     eigvals, eigvecs = np.linalg.eig(cov)
