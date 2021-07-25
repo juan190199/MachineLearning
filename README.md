@@ -24,6 +24,8 @@
     * Robust Regression: RANSAC
 
 2. Unsupervised Learning
+    * Non-negative matrix factorization
+   
 
 3. Feature and model selection
     * K-Fold Cross Validation
