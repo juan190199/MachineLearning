@@ -25,7 +25,7 @@
 
 2. Unsupervised Learning
     * Non-negative matrix factorization
-   
+
 
 3. Feature and model selection
     * K-Fold Cross Validation
@@ -41,6 +41,7 @@
 
     * Principal Component Analysis (PCA)
     * Singular Value Decomposition (SVD)
+    * Recommender System
 
 ***
 
