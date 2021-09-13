@@ -27,7 +27,7 @@ def data_preparation(digits, filter=None):
         target = target[np.where(mask)]
 
         # Relable targets
-        targets = [-1, 1]
+        targets = [0, 1]
         for i, f in enumerate(filter):
             target[target == f] = targets[i]
 
