@@ -1,7 +1,12 @@
 import numpy as np
 
 
+class GradientDescent():
+    ...
+
+
 class StochasticGradientDescent():
+    # ToDo: Include momentum
     def __init__(self, learning_rate=0.01, momentum=0):
         self.learning_rate = learning_rate
         self.momentum = momentum
@@ -14,6 +19,14 @@ class StochasticGradientDescent():
         # Use momentum if set
         self.w_updt = self.momentum * self.w_updt + (1 - self.momentum) * grad_wrt_w
         return w - self.learning_rate * self.w_updt
+
+
+class MiniBatchStochasticGradientDescent():
+    ...
+
+
+class StochasticAverageGradient():
+    ...
 
 
 class NesterovAcceleratedGradient():
@@ -126,3 +139,11 @@ class Adam():
         self.w_updt = self.learning_rate * m_hat / (np.sqrt(v_hat) + self.eps)
 
         return w - self.w_updt
+
+
+class DualCoordinateAscent():
+    ...
+
+
+class NewtonRaphson():
+    ...
