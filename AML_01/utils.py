@@ -32,4 +32,4 @@ class Zero_One_Loss():
         return n_samples - accuracy
 
     def gradient(self, y, y_pred):
-        return 0
+        return 1
