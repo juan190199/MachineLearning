@@ -1,35 +1,44 @@
 import numpy as np
 
 
-class Sigmoid():
-    def __call__(self, x):
-        return 1 / (1 + np.exp(-x))
+def sigmoid(x):
+    """
+    Sigmoid function
 
-    def gradient(self, x):
-        return self.__call__(x) * (1 - self.__call__(x))
-
-
-def accuracy_score(y, y_pred):
-    accuracy = np.sum(y == y_pred, axis=0)
-    return accuracy
+    :param x:
+    :return:
+    """
+    return 1 / (1 + np.exp(-x))
 
 
-class Loss(object):
-    def loss(self, y, y_pred):
-        return NotImplementedError()
+def loss_gradient(w, X, y, lmbd):
+    """
+    Gradient wrt. w of cross entropy loss with regularization
 
-    def gradient(self, y, y_pred):
-        return NotImplementedError()
+    :param w:
+    :param X:
+    :param y:
+    :param lmbd:
+    :return:
+    """
+    return -(y - predict(w, X)).dot(X) + w/lmbd
 
-    def acc(self, y, y_pred):
-        return NotImplementedError()
+
+def predict(w, X):
+    y_pred = np.dot(X, w)
+    y_pred[y_pred > 0] = 1
+    y_pred[y_pred < 0] = 0
+    return y_pred
 
 
-class Zero_One_Loss():
-    def loss(self, y, y_pred):
-        n_samples = len(y)
-        accuracy = accuracy_score(y, y_pred)
-        return n_samples - accuracy
+def zero_one_loss(y_pred, y):
+    """
+    Counts the number of wrongly classified samples.
 
-    def gradient(self, y, y_pred):
-        return 1
+    :param y_pred:
+
+    :param y:
+
+    :return:
+    """
+    return np.mean(y != y_pred)
