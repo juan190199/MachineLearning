@@ -8,7 +8,7 @@ def gradient_descent(w, X, y, alpha0, mu=None, gamma=None, n_iterations=10, test
         w -= alpha0 * loss_gradient(w, X, y)
         if test:
             train_loss['gd'].append(zero_one_loss(predict(w, X_train), y_train))
-            test_loss['gd'].append(zero_one_loss(predict(w, X_train), y_train))
+            test_loss['gd'].append(zero_one_loss(predict(w, X_test), y_test))
         return w
 
 
