@@ -2,6 +2,7 @@ import numpy as np
 
 from utils import (loss_gradient, zero_one_loss, predict)
 
+
 # ToDo
 def gradient_descent(w, X, y, alpha0, mu=None, gamma=None, n_iterations=10, test=False):
     for t in range(n_iterations):
@@ -23,7 +24,8 @@ def stochastic_gradient_descent(w, X, y, alpha0, momentum=None, gamma=None, n_it
         return w
 
 
-def stochastic_gradient_minibatch(w, X, y, alpha0, momentum=None, gamma=None, n_iterations=10, batch_size=20, test=False):
+def stochastic_gradient_minibatch(w, X, y, alpha0, momentum=None, gamma=None, n_iterations=10, batch_size=20,
+                                  test=False):
     for t in range(n_iterations):
         batch_idx = np.random.choice(y.shape[0], size=batch_size, replace=False)
         alpha = alpha0 / (1 + gamma * t)
@@ -34,7 +36,7 @@ def stochastic_gradient_minibatch(w, X, y, alpha0, momentum=None, gamma=None, n_
         return w
 
 
-def stochastic_gradient_momentum(w, X, y, alpha0, momentum=None, gamma=None, n_iterations=10, test=False):
+def stochastic_gradient_momentum(w, X, y, alpha0, momentum=0.9, gamma=None, n_iterations=10, test=False):
     w_update = np.zeros(w.shape)
     for t in range(n_iterations):
         idx = np.random.choice(y.shape[0], size=1, replace=False)
@@ -47,9 +49,19 @@ def stochastic_gradient_momentum(w, X, y, alpha0, momentum=None, gamma=None, n_i
         return w
 
 
+def adam(w, X, y, alpha0, momentum1=0.9, momentum2=0.99, gamma=None, n_iterations=10, eps=1e-8, test=False):
+    w_update1 = np.zeros(w.shape)
+    w_update1 = np.zeros(w.shape)
+    for t in range(n_iterations):
+        idx = np.random.choice(y.shape[0], size=1, replace=True)
+        w_update1 = momentum1 * w_update1 + (1 - momentum1) * loss_gradient(w, X[idx], y[idx])
+        w_update2 = momentum2 * w_update2 + (1 - momentum2) * loss_gradient(w, X[idx], y[idx]) ** 2
 
-def ADAM():
-    ...
+        # Bias correction
+        w_update1 = w_update1 / (1 - momentum1 ** (t + 1))
+        w_update2 = w_update2 / (1 - momentum2 ** (t + 1))
+
+        w -= alpha0 / (w_update2 ** 0.5 + eps) * momentum1
 
 
 def stochastic_average_gradient():
