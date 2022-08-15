@@ -1,6 +1,6 @@
 import numpy as np
 
-from utils import (loss_gradient, zero_one_loss, predict)
+from utils import (loss_gradient, zero_one_loss, predict, sigmoid)
 
 
 # ToDo
@@ -63,6 +63,11 @@ def adam(w, X, y, alpha0, momentum1=0.9, momentum2=0.99, gamma=None, n_iteration
 
         w -= alpha0 / (w_update2 ** 0.5 + eps) * momentum1
 
+        if test:
+            train_loss['adam'].append(zero_one_loss(predict(w, X_train), y_train))
+            test_loss['adam'].append(zero_one_loss(predict(w, X_test), y_test))
+        return w
+
 
 def stochastic_average_gradient():
     ...
@@ -72,5 +77,14 @@ def dual_coordinate_ascent():
     ...
 
 
-def newton_raphson():
-    ...
+def newton_raphson(w, X, y, alpha0, momentum=0.9, gamma=None, n_iterations=10, lmbd=0, test=False):
+    for t in range(n_iterations):
+        z = np.dot(X, w)
+        y_t = y / sigmoid(y * z)
+        W = np.diag(((sigmoid(z) * sigmoid(-z)) * lmbd / X.shape[0]).reshape(-1, ))
+        w = (np.linalg.inv(np.eye(X.shape[1]) + np.dot(X.T, W).dot(X))).dot(X.T).dot(W).dot(z + y_t)
+
+        if test:
+            train_loss['nr'].append(zero_one_loss(predict(w, X_train), y_train))
+            test_loss['nr'].append(zero_one_loss(predict(w, X_test), y_test))
+        return w
