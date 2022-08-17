@@ -7,10 +7,12 @@ from utils import (loss_gradient, zero_one_loss, predict, sigmoid)
 def gradient_descent(w, X, y, alpha0, mu=None, gamma=None, n_iterations=10, test=False):
     for t in range(n_iterations):
         w -= alpha0 * loss_gradient(w, X, y)
+
         if test:
             train_loss['gd'].append(zero_one_loss(predict(w, X_train), y_train))
             test_loss['gd'].append(zero_one_loss(predict(w, X_test), y_test))
-        return w
+
+    return w
 
 
 def stochastic_gradient_descent(w, X, y, alpha0, momentum=None, gamma=None, n_iterations=10, test=False):
@@ -18,10 +20,12 @@ def stochastic_gradient_descent(w, X, y, alpha0, momentum=None, gamma=None, n_it
         idx = np.random.choice(y.shape[0], size=1, replace=False)
         alpha = alpha0 / (1 + gamma * t)
         w -= alpha * loss_gradient(w, X[idx], y[idx])
+
         if test:
             train_loss['sgd'].append(zero_one_loss(predict(w, X_train), y_train))
             test_loss['sgd'].append(zero_one_loss(predict(w, X_test), y_test))
-        return w
+
+    return w
 
 
 def stochastic_gradient_minibatch(w, X, y, alpha0, momentum=None, gamma=None, n_iterations=10, batch_size=20,
@@ -29,11 +33,13 @@ def stochastic_gradient_minibatch(w, X, y, alpha0, momentum=None, gamma=None, n_
     for t in range(n_iterations):
         batch_idx = np.random.choice(y.shape[0], size=batch_size, replace=False)
         alpha = alpha0 / (1 + gamma * t)
-        w -= alpha * loss_gradient(w, X[batch], y[batch])
+        w -= alpha * loss_gradient(w, X[batch_idx], y[batch_idx])
+
         if test:
             train_loss['sgb'].append(zero_one_loss(predict(w, X_train), y_train))
             test_loss['sgb'].append(zero_one_loss(predict(w, X_test), y_test))
-        return w
+
+    return w
 
 
 def stochastic_gradient_momentum(w, X, y, alpha0, momentum=0.9, gamma=None, n_iterations=10, test=False):
@@ -43,10 +49,12 @@ def stochastic_gradient_momentum(w, X, y, alpha0, momentum=0.9, gamma=None, n_it
         alpha = alpha0 / (1 + gamma * t)
         w_update = momentum * w_update + (1 - momentum) * loss_gradient(w, X[idx], y[idx])
         w -= alpha * w_update
+
         if test:
             train_loss['sgm'].append(zero_one_loss(predict(w, X_train), y_train))
             test_loss['sgm'].append(zero_one_loss(predict(w, X_test), y_test))
-        return w
+
+    return w
 
 
 def adam(w, X, y, alpha0, momentum1=0.9, momentum2=0.99, gamma=None, n_iterations=10, eps=1e-8, test=False):
@@ -66,7 +74,8 @@ def adam(w, X, y, alpha0, momentum1=0.9, momentum2=0.99, gamma=None, n_iteration
         if test:
             train_loss['adam'].append(zero_one_loss(predict(w, X_train), y_train))
             test_loss['adam'].append(zero_one_loss(predict(w, X_test), y_test))
-        return w
+
+    return w
 
 
 def stochastic_average_gradient():
@@ -87,4 +96,5 @@ def newton_raphson(w, X, y, alpha0, momentum=0.9, gamma=None, n_iterations=10, l
         if test:
             train_loss['nr'].append(zero_one_loss(predict(w, X_train), y_train))
             test_loss['nr'].append(zero_one_loss(predict(w, X_test), y_test))
-        return w
+
+    return w
