@@ -21,7 +21,7 @@ def adagrad(w, grad_wrt_w, learning_rate=0.01, n_iterations=100):
     return w
 
 
-def adadelta(w, grad_wrt_w, rho=0.95, eps=1e-6, n_iterations=100):
+def adadelta(w, grad_wrt_w, rho=0.9, eps=1e-8, n_iterations=100):
     w_updt = np.zeros(np.shape(w))
     E_w_updt = np.zeros(np.shape(w))
     E_grad = np.zeros(np.shape(grad_wrt_w))
@@ -41,8 +41,14 @@ def adadelta(w, grad_wrt_w, rho=0.95, eps=1e-6, n_iterations=100):
     return w
 
 
-def rmsprop():
-    ...
+def rmsprop(w, grad_wrt_w, learning_rate=0.01, rho=0.95, eps=1e-6, n_iterations=100):
+    Eg = np.zeros(np.shape(grad_wrt_w))
+    for t in range(n_iterations):
+        Eg = rho * Eg + (1 - rho) * np.power(grad_wrt_w, 2)
+
+        w -= learning_rate * grad_wrt_w / np.sqrt(Eg + eps)
+
+    return w
 
 
 def adam():
