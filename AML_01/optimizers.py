@@ -51,8 +51,21 @@ def rmsprop(w, grad_wrt_w, learning_rate=0.01, rho=0.95, eps=1e-6, n_iterations=
     return w
 
 
-def adam():
-    ...
+def adam(w, grad_wrt_w, learning_rate=0.01, b1=0.9, b2=0.999, eps=1e-8, n_iterations=100):
+    m = np.zeros(np.shape(grad_wrt_w))
+    v = np.zeros(np.shape(grad_wrt_w))
+
+    for t in range(n_iterations):
+        m = b1 * m + (1 - b1) * grad_wrt_w
+        v = b2 * v + (1 - b2) * np.power(grad_wrt_w, 2)
+
+        m_hat = m / (1 - b1)
+        v_hat = v / (1 - b2)
+
+        w_updt = learning_rate * m_hat / (np.sqrt(v_hat) + eps)
+        w -= w_updt
+
+    return w
 
 
 def nesterov_accelerated_gradient():
